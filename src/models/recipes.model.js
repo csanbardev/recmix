@@ -4,7 +4,7 @@ import { pool } from "../db.js";
 export const getAllRecipes = async () => {
 
   try {
-    const [rows] = await pool.query("select * from recipes order by rand()")
+    const [rows] = await pool.query("select * from t_recetas order by rand() limit 14")
   
     if (rows.length <= 0) return {error: "no hay recetas"}
   
