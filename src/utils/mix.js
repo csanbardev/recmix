@@ -1,4 +1,4 @@
-import { getConditionalRecipes } from "../models/recipes.model";
+import { getConditionalRecipes } from "../models/recipes.model.js";
 
 export const mixRecipes = (recipes) => {
 

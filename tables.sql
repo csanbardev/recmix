@@ -48,3 +48,12 @@ alter table t_ingredientes_recetas
 	add constraint ingrec_fk2 foreign key(ingrec_rec_id)
     references t_recetas (rec_id) on delete cascade; 
 
+create table t_recipes_list(
+    recl_id int primary key auto_increment,
+    recl_rec_id int not NULL,
+    recl_fec TIMESTAMP not null
+);
+
+alter table t_recipes_list
+    add constraint recl_fk1 foreign key(recl_rec_id)
+    references t_recipes(rec_id) on DELETE cascade;
