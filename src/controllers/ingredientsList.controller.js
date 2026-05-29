@@ -10,7 +10,7 @@ export const getIngredientsListSrv = async (req, res) => {
 
     const ingredientsByRecipes = await getIngredientsByRecipes(recipesList)
 
-    const ingredientsResume = Array.from(resumeIngredients(ingredientsByRecipes))
+    const ingredientsResume = await resumeIngredients(ingredientsByRecipes)
 
     res.status(200).json(ingredientsResume)
   } catch (error) {
