@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const getLastRecipesList = async () => {
   try {
-    const [rows] = await pool.query("select * from t_recipes_list where recl_fec = (select max(recl_fec) from t_recipes_list))");
+    const [rows] = await pool.query("select * from t_recipes_list where recl_fec in (select max(recl_fec) from t_recipes_list)");
 
     if (rows === null || rows.length <= 0) {
       throw new Error("404");

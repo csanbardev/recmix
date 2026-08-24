@@ -21,3 +21,14 @@ export const getConditionalRecipes = async (conditions, many) => {
 
   }
 }
+
+export const getAllRecipesById= async(recipesIDs) => {
+  try {
+    
+    const [rows] = await pool.query(`select * from t_recipes where rec_id in (?)`, [recipesIDs]);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+}
