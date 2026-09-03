@@ -32,3 +32,18 @@ export const getAllRecipesById= async(recipesIDs) => {
     throw error;
   }
 }
+
+export const insertRecipe = async (recipe) => {
+  try {
+    const { rec_name, rec_url } = recipe
+    const recipeData = {
+      rec_name,
+      ...(rec_url !== undefined ? { rec_url } : {})
+    }
+
+    const [rows] = await pool.query("insert into t_recipes set ?", [recipeData])
+    return rows
+  } catch (error) {
+    throw error
+  }
+}

@@ -14,3 +14,20 @@ export const getIngredientsByRecipes = async (recipesList) => {
     throw error
   }
 }
+
+export const insertIngredientsForRecipe = async (recipeId, ingredientsList) => {
+  try {
+    const values = ingredientsList.map(ingredient => [
+      recipeId,
+      ingredient.ire_ing_id,
+      ingredient.ire_quantity
+    ])
+    const [rows] = await pool.query(
+      "insert into t_ingredients_recipes (ire_rec_id, ire_ing_id, ire_quantity) values ?",
+      [values]
+    )
+    return rows
+  } catch (error) {
+    throw error
+  }
+} 
