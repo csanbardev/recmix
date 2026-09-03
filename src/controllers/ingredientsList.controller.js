@@ -20,3 +20,25 @@ export const getIngredientsListSrv = async (req, res) => {
     })
   }
 }
+
+export const getIngredientsListByRecipeSrv = async (req, res) => {
+  try {
+    const { recId } = req.params
+
+    const ingredientsByRecipes = await getIngredientsByRecipes([
+      { recl_rec_id: recId }
+    ])
+
+    // recupera los ingredientes con los datos completos a partir de los IDs
+    const ingredientsResume = await resumeIngredients(ingredientsByRecipes)
+
+  
+
+    res.status(200).json(ingredientsResume)
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error al obtener ingredientes por receta',
+      error
+    })
+  }
+}
