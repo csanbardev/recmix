@@ -13,3 +13,15 @@ export const getIngredientNameById = async (id) => {
     throw error
   }
 }
+
+export const getAllIngredients = async () => {
+  try {
+    const [rows] = await pool.query("select * from t_ingredients")
+
+    if (rows.length <= 0) return { error: "no hay ingredientes" }
+
+    return rows
+  } catch (error) {
+    throw error
+  }
+}
