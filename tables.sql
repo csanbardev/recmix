@@ -1,59 +1,36 @@
-create table t_recetas(
-	rec_id int primary key auto_increment,
-    rec_name varchar(50) not null unique,
-    rec_kind varchar(50) not null,
-    rec_url varchar(100)
-);
+-- Esquema actual compatible con la base de datos y con el código del proyecto
 
+CREATE TABLE `t_recipes` (
+  `rec_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rec_name` varchar(50) NOT NULL,
+  `rec_url` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`rec_id`),
+  UNIQUE KEY `rec_name` (`rec_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-create table t_cantidad(
-	can_id int primary key auto_increment,
-    can_name varchar(50),
-    can_kind varchar(10)
-);
+CREATE TABLE `t_ingredients` (
+  `ing_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ing_name` varchar(50) NOT NULL,
+  `ing_kind` varchar(50) NOT NULL,
+  PRIMARY KEY (`ing_id`),
+  UNIQUE KEY `ing_name` (`ing_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-create table t_ingredientes(
-	ing_id int primary key auto_increment,
-    ing_name varchar(50) not null unique,
-    ing_kind varchar(50) not null,
-    ing_can_id int not null
-);
+CREATE TABLE `t_ingredients_recipes` (
+  `ire_rec_id` int(11) DEFAULT NULL,
+  `ire_ing_id` int(11) DEFAULT NULL,
+  `ire_quantity` int(5) DEFAULT NULL,
+  KEY `ire_fk1` (`ire_ing_id`),
+  KEY `ire_fk2` (`ire_rec_id`),
+  CONSTRAINT `ire_fk1` FOREIGN KEY (`ire_ing_id`) REFERENCES `t_ingredients` (`ing_id`) ON DELETE CASCADE,
+  CONSTRAINT `ire_fk2` FOREIGN KEY (`ire_rec_id`) REFERENCES `t_recipes` (`rec_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-alter table t_ingredientes
-	add constraint ing_fk1 foreign key(ing_can_id)
-    references t_cantidad (can_id) on delete cascade; 
-
-
-create table t_despensa(
-    des_ing_id int,
-    des_fec_cad date not null,
-    des_quantity int(5)
-);
-
-alter table t_despensa
-	add constraint des_fk1 foreign key(des_ing_id)
-    references t_ingredientes (ing_id) on delete cascade; 
-
-create table t_ingredientes_recetas(
-	ingrec_rec_id int,
-    ingrec_ing_id int,
-    ingrec_quantity int(5)
-);
-
-alter table t_ingredientes_recetas
-	add constraint ingrec_fk1 foreign key(ingrec_ing_id)
-    references t_ingredientes (ing_id) on delete cascade; 
-    
-alter table t_ingredientes_recetas
-	add constraint ingrec_fk2 foreign key(ingrec_rec_id)
-    references t_recetas (rec_id) on delete cascade; 
-
-create table t_recipes_list(
-    recl_id int primary key auto_increment,
-    recl_rec_id int not NULL,
-    recl_fec TIMESTAMP not null
-);
-
-alter table t_recipes_list
-    add constraint recl_fk1 foreign key(recl_rec_id)
-    references t_recipes(rec_id) on DELETE cascade;
+CREATE TABLE `t_recipes_list` (
+  `recl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `recl_rec_id` int(11) NOT NULL,
+  `recl_fec` timestamp NOT NULL,
+  PRIMARY KEY (`recl_id`),
+  KEY `recl_fk1` (`recl_rec_id`),
+  CONSTRAINT `recl_fk1` FOREIGN KEY (`recl_rec_id`) REFERENCES `t_recipes` (`rec_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
