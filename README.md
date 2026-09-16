@@ -1,94 +1,110 @@
 
 # Recmix
 
-REST API sencilla que accede a una base de datos con recetas de cocina y devuelve un calendario de una semana. Define filtros personalizables a gusto del usuario.
+API REST para gestionar recetas, ingredientes y listas semanales. El proyecto genera un conjunto de recetas filtrado y permite consultar la compra asociada a una lista de recetas.
 
+## Stack
 
+- Node.js
+- Express
+- MySQL
+- dotenv
+- CORS
+- nodemon
+
+## Estructura
+
+```bash
+src/
+├── app.js
+├── config.js
+├── db.js
+├── index.js
+├── controllers/
+│   ├── ingredients.controller.js
+│   ├── ingredientsList.controller.js
+│   ├── recipes.controller.js
+│   └── recipesList.controller.js
+├── models/
+│   ├── ingredients.model.js
+│   ├── ingredientsRecipes.model.js
+│   ├── recipes.model.js
+│   └── recipesList.model.js
+├── routes/
+│   ├── ingredients.routes.js
+│   ├── ingredientsList.routes.js
+│   ├── recipes.routes.js
+│   └── recipesList.routes.js
+└── utils/
+    ├── ingredients.utils.js
+    └── mix.js
+```
 
 ## Variables de entorno
 
-Para ejecutar el proyecto, será necesarios que configures estas variables de entorno en tu archivo .env
+Crear un archivo `.env` en la raíz con:
 
-`PORT` - Puerto del servidor
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=tu_password
+DB_DATABASE=recmix
+```
 
-`DB_HOST` - El host de la base de datos; por lo general, localhost
+Valores por defecto en `src/config.js` si no se configuran.
 
-`DB_PORT` - El puerto en que se ubique la base de datos
+## Base de datos
 
-`DB_USER` - El usuario  de la base de datos
+El esquema está en `tables.sql` y usa MySQL. Las tablas principales son:
 
-`DB_PASSWORD` - La contraseña del usuario
+- `t_recetas`: recetas
+- `t_cantidad`: unidades de medida
+- `t_ingredientes`: ingredientes
+- `t_ingredientes_recetas`: relación receta-ingrediente
+- `t_recipes_list`: listas de recetas por fecha
 
-`DB_DATABASE` - El nombre de la base de datos
-
-
-
-
-## Usar en local
-
-Clona el proyecto
+## Instalación
 
 ```bash
-    git clone https://link-to-project
+npm install
 ```
 
-Ve al directorio donde lo hayas guardado
+## Ejecutar
 
 ```bash
-    cd my-project
+npm run dev
 ```
 
-Instala las dependencias
+La API queda disponible en `http://localhost:3000` por defecto.
 
-```bash
-    npm install
-```
+## Endpoints
 
-Necesitarás una base de datos SQL. Esta contiene únicamente una tabla: recipes. Debe seguir la siguiente estructura
+### Recetas
 
-```sql
-    create table recipes (
-        id int primary key,
-        name varchar(30),
-        kind varchar(30),
-        url varchar(50)
-    );
-```
-**Puedes modificar los tamaños de las columnas para que se ajusten a los datos que vayas a insertar**
+- `GET /recipes` → devuelve todas las recetas
+- `POST /recipes` → crea una receta y sus ingredientes asociados
 
-Inicia el servidor
+### Listas de recetas
 
-```bash
-    npm run dev
-```
+- `GET /recipes-list` → devuelve la última lista de recetas
+- `POST /recipes-list` → guarda una lista de IDs de recetas con fecha actual
 
+### Ingredientes
 
-## Manual de uso
+- `GET /ingredients` → devuelve todos los ingredientes
+- `GET /ingredients-list/:reclFec` → agrupa ingredientes para una fecha concreta
+- `GET /ingredients-list-by-recipe/:recId` → devuelve los ingredientes de una receta
 
-Ejecuta el servidor local
+## Flujo principal
 
-```bash
-  npm run dev
-```
+1. Se consultan las recetas desde MySQL.
+2. Se filtran para evitar exceso de tipos de comida.
+3. Se pueden guardar listas semanales de recetas.
+4. Con esos IDs se obtienen ingredientes y se resumen por nombre/cantidad.
 
-Haz una llamada con tu cliente favorito —recomiendo Postman— a la url *localhost:[puerto]/recipes*. Te devolverá un JSON de 14 elementos con las recetas.
+## Nota
 
-![App Screenshot](https://i.ibb.co/PNmCKdK/postman-recmix.png)
-
-
-## Roadmap
-
-- Mejora de los filtros: más complejos y configurables
-
-- Nuevas variables de enntorno
-
-- Adición de tablas para la descripción de la receta
-
-- Nuevas rutas con utilidades
-
-- Creación de un cliente sencillo 
-
-## Tech Stack
-
-**Server:** Node, Express
+Este proyecto está en una etapa inicial y todavía tiene varios puntos de mejora en la lógica de filtrado y en la consistencia del esquema SQL.
 
