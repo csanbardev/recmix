@@ -12,6 +12,7 @@ CREATE TABLE `t_ingredients` (
   `ing_id` int(11) NOT NULL AUTO_INCREMENT,
   `ing_name` varchar(50) NOT NULL,
   `ing_kind` varchar(50) NOT NULL,
+  `ing_unit` varchar(50) NOT NULL,
   PRIMARY KEY (`ing_id`),
   UNIQUE KEY `ing_name` (`ing_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
