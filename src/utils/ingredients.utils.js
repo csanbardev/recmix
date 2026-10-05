@@ -34,6 +34,7 @@ const formatIngredientsMap = async (map) => {
     formatedIngredients.push({
       ing_name: ingredientName.ing_name,
       ing_unit: ingredientName.ing_unit,
+      ing_value: Number((Number(ingredientName.ing_value) * valor).toFixed(2)),
       ire_ing_id: clave,
       ire_quantity: valor
     })
