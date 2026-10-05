@@ -13,6 +13,7 @@ CREATE TABLE `t_ingredients` (
   `ing_name` varchar(50) NOT NULL,
   `ing_kind` varchar(50) NOT NULL,
   `ing_unit` varchar(50) NOT NULL,
+  `ing_value` decimal(10,2) NOT NULL DEFAULT 0.00,
   PRIMARY KEY (`ing_id`),
   UNIQUE KEY `ing_name` (`ing_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
