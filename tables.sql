@@ -21,7 +21,7 @@ CREATE TABLE `t_ingredients` (
 CREATE TABLE `t_ingredients_recipes` (
   `ire_rec_id` int(11) DEFAULT NULL,
   `ire_ing_id` int(11) DEFAULT NULL,
-  `ire_quantity` int(5) DEFAULT NULL,
+  `ire_quantity` decimal(10,2) DEFAULT NULL,
   KEY `ire_fk1` (`ire_ing_id`),
   KEY `ire_fk2` (`ire_rec_id`),
   CONSTRAINT `ire_fk1` FOREIGN KEY (`ire_ing_id`) REFERENCES `t_ingredients` (`ing_id`) ON DELETE CASCADE,

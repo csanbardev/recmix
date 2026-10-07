@@ -13,11 +13,11 @@ export const resumeIngredients = async (ingredientsList) => {
     // increase quantity when the ingredient is already on the map
     if (newIngredientList.has(ingredient.ire_ing_id)) {
       let oldQuantity = newIngredientList.get(ingredient.ire_ing_id)
-      let newQuantity = oldQuantity + ingredient.ire_quantity
+      let newQuantity = Number(oldQuantity) + Number(ingredient.ire_quantity)
       newIngredientList.set(ingredient.ire_ing_id, newQuantity)
     } else {
       // add ingredient to map
-      newIngredientList.set(ingredient.ire_ing_id, ingredient.ire_quantity)
+      newIngredientList.set(ingredient.ire_ing_id, Number(ingredient.ire_quantity))
     }
 
   });
@@ -43,3 +43,11 @@ const formatIngredientsMap = async (map) => {
   return formatedIngredients
 }
 
+const calculateIngredientValue = (pricePerKg, quantity, unit) => {
+  const quantityInGrams =
+    unit === "kg" ? Number(quantity) * 1000 : Number(quantity);
+
+  return Number(
+    ((Number(pricePerKg) / 1000) * quantityInGrams).toFixed(2)
+  );
+};
